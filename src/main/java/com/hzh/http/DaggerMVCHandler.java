@@ -1,24 +1,28 @@
 package com.hzh.http;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.hzh.dagger.*;
+import com.hzh.dagger.Response;
 import io.muserver.MuHandler;
 import io.muserver.MuRequest;
 import io.muserver.MuResponse;
 
 public class DaggerMVCHandler implements MuHandler  {
+    final RequestRouter requestRouter;
+
+    public DaggerMVCHandler(RequestRouter requestRouter) {
+        this.requestRouter = requestRouter;
+    }
+
     @Override
     public boolean handle(MuRequest muRequest, MuResponse muResponse) throws Exception {
 
-        ListenableFuture<Response> response = DaggerDaggerMVCComponent.builder()
-                .withRequest(muRequest)
-                .build()
-                .request();
-
-        Response resp = response.get();
-        muResponse.writer().write(resp.html);
+        final Response res = requestRouter.dispatch(muRequest);
+        muResponse.writer().write(res.html);
+//        Response response = Dagg.builder()
+//                .withRequest(muRequest)
+//                .build()
+//                .request();
+//
+//        muResponse.writer().write(response.html);
 //        Futures.addCallback(response, new FutureCallback<Response>() {
 //            @Override
 //            public void onSuccess(Response result) {

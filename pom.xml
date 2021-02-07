@@ -35,7 +35,17 @@
             <artifactId>guava</artifactId>
             <version>26.0-jre</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value-annotations</artifactId>
+            <version>${auto-value.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value</artifactId>
+            <version>${auto-value.version}</version>
+            <optional>true</optional>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -65,6 +75,11 @@
                 <version>3.6.1</version>
                 <configuration>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.auto.value</groupId>
+                            <artifactId>auto-value</artifactId>
+                            <version>${auto-value.version}</version>
+                        </path>
                         <path>
                             <groupId>com.google.dagger</groupId>
                             <artifactId>dagger-compiler</artifactId>
@@ -99,5 +114,6 @@
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
         <dagger.version>2.31.2</dagger.version>
+        <auto-value.version>1.7.4</auto-value.version>
     </properties>
 </project>
