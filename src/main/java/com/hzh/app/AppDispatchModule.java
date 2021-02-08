@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Module
 final public class AppDispatchModule {
@@ -18,7 +19,7 @@ final public class AppDispatchModule {
 
     @Provides
     @IntoMap
-    @GetPath(value = "/hello")
+    @DispatchPath(value = "/hello", method = HttpMethod.GET)
     static Response dispatchHello(MuRequest request, HttpMethod method, @FormData RequestParameters requestParameters) {
         logger.info("calling hello {}", request.uri());
         logger.info("{}", requestParameters);
@@ -37,5 +38,13 @@ final public class AppDispatchModule {
             e.printStackTrace();
         }
         return new Response(555, "a");
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/hello/{name}/{age}/{hobby}")
+    static Response dispatchHelloName(MuRequest request, @PathValue Map<String, String> pathValue) {
+        logger.info("calling helloName");
+        return new Response(200, pathValue.toString());
     }
 }

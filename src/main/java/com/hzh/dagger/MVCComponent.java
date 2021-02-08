@@ -7,6 +7,9 @@ import dagger.Subcomponent;
 import io.muserver.MuRequest;
 import io.muserver.RequestParameters;
 
+import javax.inject.Singleton;
+
+@Singleton
 @Subcomponent(modules = {DefaultDispatchModule.class, AppDispatchModule.class})
 public interface MVCComponent {
   Response request();

@@ -40,12 +40,18 @@
             <artifactId>auto-value-annotations</artifactId>
             <version>${auto-value.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.google.auto.value</groupId>
-            <artifactId>auto-value</artifactId>
-            <version>${auto-value.version}</version>
-            <optional>true</optional>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.google.auto.value</groupId>-->
+<!--            <artifactId>auto-value</artifactId>-->
+<!--            <version>${auto-value.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <!-- test -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -60,11 +66,11 @@
             <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -75,6 +81,11 @@
                 <version>3.6.1</version>
                 <configuration>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>1.0-rc7</version>
+                        </path>
                         <path>
                             <groupId>com.google.auto.value</groupId>
                             <artifactId>auto-value</artifactId>

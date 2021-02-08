@@ -6,7 +6,6 @@ import dagger.Component;
 
 import javax.inject.Singleton;
 
-@Singleton
 @Component(modules = {MVCModule.class, AppDispatchModule.class})
 public interface AppComponent {
     RequestRouter requestRouter();

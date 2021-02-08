@@ -6,10 +6,7 @@ import io.muserver.MuRequest;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.inject.Singleton;
-import java.io.IOException;
 
-@Singleton
 public class RequestRouter {
   private final Provider<MVCComponent.Builder> mvcComponentProvider;
 
