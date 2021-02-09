@@ -1,4 +1,4 @@
-package com.hzh.dagger;
+package com.hzh.dagger.annotation;
 
 import dagger.MapKey;
 

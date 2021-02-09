@@ -1,4 +1,4 @@
-package com.hzh.http;
+package com.hzh.dagger.http;
 
 public enum HttpMethod {
     ALL,
@@ -21,4 +21,3 @@ public enum HttpMethod {
         throw new RuntimeException("Method not found");
     }
 }
-

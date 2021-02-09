@@ -1,4 +1,4 @@
-package com.hzh.http;
+package com.hzh.dagger.http;
 
 import java.util.List;
 import java.util.Objects;
