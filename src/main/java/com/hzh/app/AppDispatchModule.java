@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 @Module(includes = CollectDispatcherModule.class)
 final public class AppDispatchModule {
@@ -24,7 +25,7 @@ final public class AppDispatchModule {
         logger.info("calling hello {}", request.getRawRequest().uri());
         logger.info("Method: {}", method);
         logger.info("Request parameter: {}", parameters);
-        return new Result(200, "Hello");
+        return new Result(200, "<h1>Hello</h1>");
     }
 
     @Provides
@@ -61,5 +62,17 @@ final public class AppDispatchModule {
     static Result dispatchBlank() {
         logger.info("calling empty");
         return new Result(200, "blank");
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/cookie")
+    static Result dispatchCookie(List<Cookie> cookieList) {
+        logger.info("calling cookie");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<h1>Cookie</h1>");
+        cookieList.forEach(c -> sb.append(c.getName()).append(": ").append(c.getValue()).append("<br>"));
+        return new Result(200, sb.toString());
+//        return new Result(200, "<h1>Hello</h1>");
     }
 }

@@ -1,19 +1,17 @@
 package com.hzh.dagger.module;
 
 
-import com.hzh.dagger.annotation.PathValue;
-import com.hzh.dagger.http.HttpMethod;
-import com.hzh.dagger.http.MVCHolder;
-import com.hzh.dagger.http.PathValueMap;
-import com.hzh.dagger.http.Request;
 import com.hzh.dagger.annotation.FormData;
+import com.hzh.dagger.annotation.PathValue;
 import com.hzh.dagger.annotation.QueryParameter;
+import com.hzh.dagger.http.*;
 import dagger.Module;
 import dagger.Provides;
 import io.muserver.RequestParameters;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 @Module
@@ -32,6 +30,11 @@ public interface MVCModule {
     @Provides
     static URI provideRequestNormalizeURI(MVCHolder mvcHolder) {
         return mvcHolder.getLocalRequestContext().getURI().normalize();
+    }
+
+    @Provides
+    static List<Cookie> provideRequestCookies(MVCHolder mvcHolder) {
+        return mvcHolder.getLocalRequestContext().getCookies();
     }
 
     @Provides

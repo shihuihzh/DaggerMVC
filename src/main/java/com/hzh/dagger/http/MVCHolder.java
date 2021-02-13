@@ -5,6 +5,7 @@ import io.muserver.MuRequest;
 import io.muserver.MuResponse;
 
 import java.net.URI;
+import java.util.List;
 
 public class MVCHolder {
 
@@ -26,12 +27,10 @@ public class MVCHolder {
     public static class RequestContext {
         private final Request request;
         private final Response response;
-        private final HttpMethod method;
 
         public RequestContext(MuRequest rawRequest, MuResponse rawResponse) {
             this.request = new Request(rawRequest);
             this.response = new Response(rawResponse);
-            this.method = HttpMethod.of(rawRequest.method().toString());
         }
 
         public URI getURI() {
@@ -47,7 +46,11 @@ public class MVCHolder {
         }
 
         public HttpMethod getMethod() {
-            return method;
+            return request.getMethod();
+        }
+
+        public List<Cookie> getCookies() {
+            return request.getCookies();
         }
     }
 }
