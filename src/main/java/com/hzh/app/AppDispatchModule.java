@@ -11,8 +11,11 @@ import io.muserver.RequestParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Module(includes = CollectDispatcherModule.class)
 final public class AppDispatchModule {
@@ -25,7 +28,10 @@ final public class AppDispatchModule {
         logger.info("calling hello {}", request.getRawRequest().uri());
         logger.info("Method: {}", method);
         logger.info("Request parameter: {}", parameters);
-        return new Result(200, "<h1>Hello</h1>");
+        return HTMLResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withData("<h1>Hello</h1>")
+                .build();
     }
 
     @Provides
@@ -34,7 +40,10 @@ final public class AppDispatchModule {
     static Result dispatchWorld(Request request) {
         logger.info("calling world");
         try {
-            return new Result(200, request.getRawRequest().readBodyAsString());
+            return HTMLResult.Builder.newBuilder()
+                    .withStatusCode(200)
+                    .withData(request.getRawRequest().readBodyAsString())
+                    .build();
         } catch (IOException e) {
             return DaggerMVCException.createAndThrow(e);
         }
@@ -53,7 +62,10 @@ final public class AppDispatchModule {
     @DispatchPath("/hello/{name}/{age}/{hobby}")
     static Result dispatchHelloName(Request request, PathValueMap pathValue) {
         logger.info("calling helloName");
-        return new Result(200, pathValue.toString());
+        return HTMLResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withData(pathValue.toString())
+                .build();
     }
 
     @Provides
@@ -61,7 +73,10 @@ final public class AppDispatchModule {
     @DispatchPath("/blank")
     static Result dispatchBlank() {
         logger.info("calling empty");
-        return new Result(200, "blank");
+        return HTMLResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withData("Hello")
+                .build();
     }
 
     @Provides
@@ -73,6 +88,47 @@ final public class AppDispatchModule {
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>Cookie</h1>");
         cookieList.forEach(c -> sb.append(c.getName()).append(": ").append(c.getValue()).append("<br>"));
-        return new Result(200, sb.toString());
+        return HTMLResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withData(sb.toString())
+                .build();
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/json")
+    static Result dispatchJson() {
+        logger.info("calling json");
+        Map<String, Object> obj = new HashMap<>();
+        obj.put("name", "Howe");
+        obj.put("age", 30);
+        obj.put("hobby", "computer");
+
+        return JSONResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withObject(obj)
+                .build();
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/download")
+    static Result dispatchDownload() {
+        logger.info("calling dowload");
+        return FileResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withFile(new File(AppDispatchModule.class.getResource("/downloadme.bin").getFile()))
+                .build();
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/download-mp4")
+    static Result dispatchDownloadMP4() {
+        logger.info("calling dowload");
+        return FileResult.Builder.newBuilder()
+                .withStatusCode(200)
+                .withFile(new File(AppDispatchModule.class.getResource("/downloadme.mp4").getFile()))
+                .build();
     }
 }

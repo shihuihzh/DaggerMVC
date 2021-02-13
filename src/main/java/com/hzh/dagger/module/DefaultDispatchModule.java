@@ -21,11 +21,11 @@ final public class DefaultDispatchModule {
 //    private static final String DAGGER_MVC_METHOD_NOT_ALLOWED = "DAGGER_MVC_METHOD_NOT_ALLOWED";
 
     static Result return404(Request request) {
-        return new Result(404, "<h1>page not found</h1>" + request.uri().getPath());
+        return new Result(404, "text/html", "<h1>page not found</h1>" + request.uri().getPath());
     }
 
     static Result return405(Request request) {
-        return new Result(405, "<h1>Method Not Allowed</h1>");
+        return new Result(405, "text/html", "<h1>Method Not Allowed</h1>");
     }
 
     static Result return500(Request request, Exception e) {
@@ -38,7 +38,7 @@ final public class DefaultDispatchModule {
                     .append("\n");
 
         }
-        return new Result(500, "<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>");
+        return new Result(500, "text/html", "<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>");
     }
 
     @Provides
