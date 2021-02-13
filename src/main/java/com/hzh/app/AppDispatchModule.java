@@ -67,12 +67,12 @@ final public class AppDispatchModule {
     @Provides
     @IntoMap
     @DispatchPath("/cookie")
-    static Result dispatchCookie(List<Cookie> cookieList) {
+    static Result dispatchCookie(Request request, List<Cookie> cookieList) {
         logger.info("calling cookie");
+        logger.info("cookie: a=" + request.getCookie("a").getValue());
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>Cookie</h1>");
         cookieList.forEach(c -> sb.append(c.getName()).append(": ").append(c.getValue()).append("<br>"));
         return new Result(200, sb.toString());
-//        return new Result(200, "<h1>Hello</h1>");
     }
 }

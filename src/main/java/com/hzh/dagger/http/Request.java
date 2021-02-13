@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class Request {
     private final MuRequest rawRequest;
+    private List<Cookie> cookiesCache;
 
     public Request(MuRequest rawRequest) {
         this.rawRequest = rawRequest;
@@ -26,8 +27,19 @@ public class Request {
     }
 
     public List<Cookie> getCookies() {
-        return rawRequest.cookies().stream()
-                .map(Cookie::new).collect(Collectors.toList());
+        if (cookiesCache == null) {
+            cookiesCache = rawRequest.cookies().stream().map(Cookie::new).collect(Collectors.toList());
+        }
+
+        return cookiesCache;
+    }
+
+    public Cookie getCookie(String name) {
+        final List<Cookie> cookies = getCookies();
+        return cookies.stream()
+                .filter(c -> c.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
 }
