@@ -14,7 +14,7 @@ public class DaggerMVCHandler implements MuHandler  {
     @Override
     public boolean handle(MuRequest muRequest, MuResponse muResponse) throws Exception {
 
-        final Response res = requestRouter.dispatch(muRequest);
+        final Result res = requestRouter.dispatch(muRequest, muResponse);
         muResponse.status(res.code);
         muResponse.writer().write(res.html);
 //        Response response = Dagg.builder()

@@ -1,12 +1,12 @@
 package com.hzh.dagger;
 
-import com.hzh.dagger.http.Response;
+import com.hzh.dagger.http.Result;
 import com.hzh.dagger.module.DefaultDispatchModule;
 import dagger.Subcomponent;
 
 @Subcomponent(modules = {DefaultDispatchModule.class})
 public interface MVCComponent {
-  Response request();
+  Result request() throws Exception;
 //  Executor executor();
 
   @Subcomponent.Builder

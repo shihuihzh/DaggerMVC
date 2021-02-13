@@ -2,6 +2,7 @@ package com.hzh.dagger.http;
 
 import com.hzh.dagger.MVCComponent;
 import io.muserver.MuRequest;
+import io.muserver.MuResponse;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -16,10 +17,13 @@ public class RequestRouter {
         this.holder = holder;
     }
 
-    public Response dispatch(MuRequest muRequest) throws Exception {
-        holder.setRequest(muRequest);
-        return mvcComponentProvider.get()
+    public Result dispatch(MuRequest muRequest, MuResponse muResponse) throws Exception {
+        holder.initRequestContext(muRequest, muResponse);
+        final Result response = mvcComponentProvider.get()
                 .build().request();
-    }
 
+        holder.finishRequest();
+
+        return response;
+    }
 }

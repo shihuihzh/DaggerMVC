@@ -5,17 +5,17 @@ import io.muserver.MuRequest;
 import java.net.URI;
 
 public class Request {
-    private MuRequest request;
+    private MuRequest rawRequest;
 
-    public Request(MuRequest request) {
-        this.request = request;
+    public Request(MuRequest rawRequest) {
+        this.rawRequest = rawRequest;
     }
 
-    public MuRequest getRequest() {
-        return request;
+    public MuRequest getRawRequest() {
+        return rawRequest;
     }
 
     public URI uri() {
-        return this.request.uri();
+        return this.rawRequest.uri();
     }
 }

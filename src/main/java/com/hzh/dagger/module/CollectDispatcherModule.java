@@ -1,7 +1,6 @@
 package com.hzh.dagger.module;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.hzh.dagger.annotation.DispatchPath;
 import com.hzh.dagger.http.*;
 import dagger.Module;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +25,9 @@ public class CollectDispatcherModule {
 
     @Provides
     @Singleton
-    static Map<Dispatcher, Provider<Response>> dispatchersToRegex(Map<DispatchPath, Provider<Response>> dispatchers) {
+    static Map<Dispatcher, Provider<Result>> dispatchersToRegex(Map<DispatchPath, Provider<Result>> dispatchers) {
         logger.debug("Transforming Dispatcher");
-        Map<Dispatcher, Provider<Response>> dispatcherProviderMap = new HashMap<>();
+        Map<Dispatcher, Provider<Result>> dispatcherProviderMap = new HashMap<>();
         dispatchers.forEach((dispatchPath, pResponse) -> {
             final HttpMethod method = dispatchPath.method();
             final String path = dispatchPath.value();
@@ -50,10 +50,10 @@ public class CollectDispatcherModule {
     }
 
     @Provides
-    static PathValue pathValue(Map<Dispatcher, Provider<Response>> dispatchers, Request request) {
+    static PathValueMap pathValue(Map<Dispatcher, Provider<Result>> dispatchers, Request request, URI normalizeURI) {
 
-        String path = request.getRequest().uri().normalize().getPath();
-        final PathValue pathValueMap = new PathValue();
+        String path = normalizeURI.getPath();
+        final PathValueMap pathValueMap = new PathValueMap();
 
         logger.debug("Filling path value for path={}", path);
         for (Dispatcher dispatcher: dispatchers.keySet()) {

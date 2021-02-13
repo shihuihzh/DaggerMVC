@@ -1,22 +1,53 @@
 package com.hzh.dagger.http;
 
+import com.hzh.dagger.annotation.QueryParameter;
 import io.muserver.MuRequest;
+import io.muserver.MuResponse;
+
+import java.net.URI;
 
 public class MVCHolder {
 
-    private final ThreadLocal<HttpMethod> methodHolder = new ThreadLocal<>();
-    private final ThreadLocal<Request> requestHolder = new ThreadLocal<>();
+    private final ThreadLocal<RequestContext> requestCtxHolder = new ThreadLocal<>();
 
-    public void setRequest(MuRequest request) {
-        methodHolder.set(HttpMethod.of(request.method().toString()));
-        requestHolder.set(new Request(request));
+    public void initRequestContext(MuRequest request, MuResponse response) {
+        requestCtxHolder.set(new RequestContext(request, response));
     }
 
-    public HttpMethod getLocalMethod() {
-        return methodHolder.get();
+    public RequestContext getLocalRequestContext() {
+        return requestCtxHolder.get();
     }
 
-    public Request getLocalRequest() {
-        return requestHolder.get();
+    public void finishRequest() {
+        requestCtxHolder.remove();
+    }
+
+
+    public static class RequestContext {
+        private final Request request;
+        private final Response response;
+        private final HttpMethod method;
+
+        public RequestContext(MuRequest rawRequest, MuResponse rawResponse) {
+            this.request = new Request(rawRequest);
+            this.response = new Response(rawResponse);
+            this.method = HttpMethod.of(rawRequest.method().toString());
+        }
+
+        public URI getURI() {
+            return request.uri();
+        }
+
+        public Request getRequest() {
+            return request;
+        }
+
+        public Response getResponse() {
+            return response;
+        }
+
+        public HttpMethod getMethod() {
+            return method;
+        }
     }
 }

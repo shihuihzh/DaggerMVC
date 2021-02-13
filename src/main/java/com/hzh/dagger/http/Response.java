@@ -1,11 +1,12 @@
 package com.hzh.dagger.http;
 
-public class Response {
-    public String html;
-    public int code;
+import io.muserver.MuResponse;
 
-    public Response(int code, String html) {
-        this.code = code;
-        this.html = html;
+public class Response {
+    private MuResponse response;
+
+    public Response(MuResponse response) {
+        this.response = response;
     }
+
 }

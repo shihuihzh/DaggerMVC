@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class PathValue implements Map<String, String> {
+public class PathValueMap implements Map<String, String> {
     Map<String, String> pathValueMap;
 
-    public PathValue() {
+    public PathValueMap() {
         pathValueMap = new TreeMap<>();
     }
 
