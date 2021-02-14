@@ -8,8 +8,8 @@ import io.muserver.Mutils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.stream.StreamSupport;
 
 
 public class DaggerMVCHandler implements MuHandler  {
@@ -23,14 +23,22 @@ public class DaggerMVCHandler implements MuHandler  {
     public boolean handle(MuRequest muRequest, MuResponse muResponse) throws Exception {
 
         final Result res = requestRouter.dispatch(muRequest, muResponse);
+        final Cookie[] cookies = res.getCookies();
+
         muResponse.status(res.getStatusCode());
         muResponse.contentType(res.getContentType());
-        Object data = res.getData();
 
+        if (cookies != null && cookies.length > 0) {
+            Arrays.stream(cookies)
+                    .map(Cookie::getRawCookie)
+                    .forEach(muResponse::addCookie);
+        }
+
+        Object data = res.getData();
         if (data != null) {
             if (res instanceof FileResult) {
                 final FileResult result = (FileResult) res;
-                muResponse.headers().set("Content-Disposition", "attachment; filename=" + URLEncoder.encode(result.getFileName(), StandardCharsets.UTF_8));
+                muResponse.headers().set("Content-Disposition", "attachment; filename=" + Mutils.urlEncode(result.getFileName()));
                 muResponse.headers().set("Content-Length", ((File) data).length());
                 try (FileInputStream fis = new FileInputStream((File) data)) {
                     Mutils.copy(fis, muResponse.outputStream(), 1024);

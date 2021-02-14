@@ -6,36 +6,29 @@ public class JSONResult extends Result {
 
     private static final Gson GSON = new Gson();
 
-    public JSONResult(int statusCode, String contentType, String data) {
-        super(statusCode, contentType, data);
+    public JSONResult(int statusCode, String contentType, String data, Cookie[] cookies) {
+        super(statusCode, contentType, data, cookies);
     }
 
-    public static class Builder {
+    public static JSONResultBuilder newBuilder() {
+        return new JSONResultBuilder();
+    }
 
-        private int statusCode = 200;
+    public static class JSONResultBuilder extends Result.Builder<JSONResultBuilder> {
+
         private String data;
-
-        public Builder withStatusCode(int code) {
-            this.statusCode = code;
+        public JSONResultBuilder withJsonString(String jsonString) {
+            this.data = jsonString;
             return this;
         }
 
-        public Builder withJsonString(String jsonString) {
-            this.data = data;
-            return this;
-        }
-
-        public Builder withObject(Object object) {
+        public JSONResultBuilder withObject(Object object) {
             this.data = GSON.toJson(object);
             return this;
         }
 
         public JSONResult build() {
-            return new JSONResult(statusCode, "application/json", data);
-        }
-
-        public static Builder newBuilder() {
-            return new Builder();
+            return new JSONResult(this.statusCode, "application/json", data, cookies);
         }
 
     }

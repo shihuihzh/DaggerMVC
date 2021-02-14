@@ -1,9 +1,6 @@
 package com.hzh.dagger.module;
 
-import com.hzh.dagger.http.Dispatcher;
-import com.hzh.dagger.http.HttpMethod;
-import com.hzh.dagger.http.Request;
-import com.hzh.dagger.http.Result;
+import com.hzh.dagger.http.*;
 import dagger.Module;
 import dagger.Provides;
 import org.slf4j.Logger;
@@ -21,11 +18,18 @@ final public class DefaultDispatchModule {
 //    private static final String DAGGER_MVC_METHOD_NOT_ALLOWED = "DAGGER_MVC_METHOD_NOT_ALLOWED";
 
     static Result return404(Request request) {
-        return new Result(404, "text/html", "<h1>page not found</h1>" + request.uri().getPath());
+        return HTMLResult.newBuilder()
+                .withStatusCode(404)
+                .withData("<h1>page not found</h1>" + request.uri().getPath())
+                .build();
+
     }
 
     static Result return405(Request request) {
-        return new Result(405, "text/html", "<h1>Method Not Allowed</h1>");
+        return HTMLResult.newBuilder()
+                .withStatusCode(405)
+                .withData("<h1>Method Not Allowed</h1>")
+                .build();
     }
 
     static Result return500(Request request, Exception e) {
@@ -38,7 +42,11 @@ final public class DefaultDispatchModule {
                     .append("\n");
 
         }
-        return new Result(500, "text/html", "<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>");
+
+        return HTMLResult.newBuilder()
+                .withStatusCode(500)
+                .withData("<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>")
+                .build();
     }
 
     @Provides

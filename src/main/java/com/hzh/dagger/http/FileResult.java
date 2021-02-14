@@ -14,8 +14,8 @@ public class FileResult extends Result {
 
     private final String fileName;
 
-    public FileResult(int statusCode, String contentType, File file, String fileName) {
-        super(statusCode, contentType, file);
+    public FileResult(int statusCode, String contentType, File file, String fileName, Cookie[] cookies) {
+        super(statusCode, contentType, file, cookies);
         this.fileName = fileName;
     }
 
@@ -23,24 +23,21 @@ public class FileResult extends Result {
         return fileName;
     }
 
-    public static class Builder {
+    public static FileResultBuilder newBuilder() {
+        return new FileResultBuilder();
+    }
 
-        private int statusCode = 200;
-        private String contentType = "application/octet-stream";
+    public static class FileResultBuilder extends Result.Builder<FileResultBuilder> {
+
         private File file;
         private String fileName;
 
-        public Builder withStatusCode(int code) {
-            this.statusCode = code;
-            return this;
-        }
-
-        public Builder withFileName(String fileName) {
+        public FileResultBuilder withFileName(String fileName) {
             this.fileName = fileName;
             return this;
         }
 
-        public Builder withFile(File file) {
+        public FileResultBuilder withFile(File file) {
             this.file = file;
 
             if (file != null && file.exists()) {
@@ -54,11 +51,7 @@ public class FileResult extends Result {
         }
 
         public FileResult build() {
-            return new FileResult(statusCode, contentType, file, fileName != null ? fileName : file.getName());
-        }
-
-        public static Builder newBuilder() {
-            return new Builder();
+            return new FileResult(statusCode, contentType, file, fileName != null ? fileName : file.getName(), cookies);
         }
 
     }

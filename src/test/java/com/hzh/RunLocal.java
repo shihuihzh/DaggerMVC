@@ -17,7 +17,7 @@ public class RunLocal {
                 .build().requestRouter();
 
         MuServer server = MuServerBuilder.httpServer()
-                .withHttpPort(8080)
+                .withHttpsPort(8080)
                 .addHandler(new DaggerMVCHandler(requestRouter))
                 .start();
         logger.info("Started server at " + server.uri());

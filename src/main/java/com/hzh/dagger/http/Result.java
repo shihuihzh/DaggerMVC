@@ -4,11 +4,14 @@ public class Result {
     private final int statusCode;
     private final Object data;
     private final String contentType;
+    private final Cookie[] cookies;
 
-    public Result(int statusCode, String contentType, Object data) {
+
+    public Result(int statusCode, String contentType, Object data, Cookie[] cookies) {
         this.statusCode = statusCode;
         this.contentType = contentType;
         this.data = data;
+        this.cookies = cookies;
     }
 
     public int getStatusCode() {
@@ -23,33 +26,40 @@ public class Result {
         return contentType;
     }
 
-    public static class Builder {
+    public Cookie[] getCookies() {
+        return cookies;
+    }
 
-        private int statusCode = 200;
-        private String data;
-        private String contentType;
+    public static class Builder<T extends Builder> {
 
-        public Builder withStatusCode(int code) {
+        protected int statusCode = 200;
+        protected String data;
+        protected String contentType;
+        protected Cookie[] cookies;
+
+        public T withStatusCode(int code) {
             this.statusCode = code;
-            return this;
+            return (T) this;
         }
 
-        public Builder withContentType(String contentType) {
+        public T withContentType(String contentType) {
             this.contentType = contentType;
-            return this;
+            return (T) this;
         }
 
-        public Builder withData(String data) {
+        public T withData(String data) {
             this.data = data;
-            return this;
+            return (T) this;
         }
 
-        public HTMLResult build() {
-            return new HTMLResult(statusCode, contentType, data);
+        public T withCookie(Cookie... cookies) {
+            this.cookies = cookies;
+            return (T) this;
         }
 
-        public static  Builder newBuilder() {
-            return new Builder();
+        public Result build() {
+            return new Result(statusCode, contentType, data, cookies);
         }
+
     }
 }

@@ -2,32 +2,26 @@ package com.hzh.dagger.http;
 
 public class TextResult extends Result {
 
-    public TextResult(int statusCode, String contentType, String data) {
-        super(statusCode, contentType, data);
+    public TextResult(int statusCode, String contentType, String data, Cookie[] cookies) {
+        super(statusCode, contentType, data, cookies);
+    }
+
+    public static TextResultBuilder newBuilder() {
+        return new TextResultBuilder();
     }
 
 
-    public static class Builder {
+    public static class TextResultBuilder extends Result.Builder<TextResultBuilder> {
 
-        private int statusCode = 200;
         private String data;
 
-        public Builder withStatusCode(int code) {
-            this.statusCode = code;
-            return this;
-        }
-
-        public Builder withData(String data) {
+        public TextResultBuilder withData(String data) {
             this.data = data;
             return this;
         }
 
         public TextResult build() {
-            return new TextResult(statusCode, "text/plain", data);
-        }
-
-        public static Builder newBuilder() {
-            return new Builder();
+            return new TextResult(statusCode, "text/plain", data, cookies);
         }
 
     }

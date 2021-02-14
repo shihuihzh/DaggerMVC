@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Module(includes = CollectDispatcherModule.class)
 final public class AppDispatchModule {
@@ -28,7 +29,7 @@ final public class AppDispatchModule {
         logger.info("calling hello {}", request.getRawRequest().uri());
         logger.info("Method: {}", method);
         logger.info("Request parameter: {}", parameters);
-        return HTMLResult.Builder.newBuilder()
+        return HTMLResult.newBuilder()
                 .withStatusCode(200)
                 .withData("<h1>Hello</h1>")
                 .build();
@@ -40,7 +41,7 @@ final public class AppDispatchModule {
     static Result dispatchWorld(Request request) {
         logger.info("calling world");
         try {
-            return HTMLResult.Builder.newBuilder()
+            return HTMLResult.newBuilder()
                     .withStatusCode(200)
                     .withData(request.getRawRequest().readBodyAsString())
                     .build();
@@ -62,7 +63,7 @@ final public class AppDispatchModule {
     @DispatchPath("/hello/{name}/{age}/{hobby}")
     static Result dispatchHelloName(Request request, PathValueMap pathValue) {
         logger.info("calling helloName");
-        return HTMLResult.Builder.newBuilder()
+        return HTMLResult.newBuilder()
                 .withStatusCode(200)
                 .withData(pathValue.toString())
                 .build();
@@ -73,7 +74,7 @@ final public class AppDispatchModule {
     @DispatchPath("/blank")
     static Result dispatchBlank() {
         logger.info("calling empty");
-        return HTMLResult.Builder.newBuilder()
+        return HTMLResult.newBuilder()
                 .withStatusCode(200)
                 .withData("Hello")
                 .build();
@@ -84,13 +85,21 @@ final public class AppDispatchModule {
     @DispatchPath("/cookie")
     static Result dispatchCookie(Request request, List<Cookie> cookieList) {
         logger.info("calling cookie");
-        logger.info("cookie: a=" + request.getCookie("a").getValue());
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>Cookie</h1>");
         cookieList.forEach(c -> sb.append(c.getName()).append(": ").append(c.getValue()).append("<br>"));
-        return HTMLResult.Builder.newBuilder()
+
+        // set a random cookie
+        Cookie cookie = Cookie.builder()
+                .withName("randomNumber")
+                .withValue(String.valueOf(ThreadLocalRandom.current().nextInt(10000)))
+                .withMaxAge(ThreadLocalRandom.current().nextInt(10000))
+                .build();
+
+        return HTMLResult.newBuilder()
                 .withStatusCode(200)
                 .withData(sb.toString())
+                .withCookie(cookie)
                 .build();
     }
 
@@ -104,10 +113,11 @@ final public class AppDispatchModule {
         obj.put("age", 30);
         obj.put("hobby", "computer");
 
-        return JSONResult.Builder.newBuilder()
+        return JSONResult.newBuilder()
                 .withStatusCode(200)
                 .withObject(obj)
                 .build();
+
     }
 
     @Provides
@@ -115,7 +125,7 @@ final public class AppDispatchModule {
     @DispatchPath("/download")
     static Result dispatchDownload() {
         logger.info("calling dowload");
-        return FileResult.Builder.newBuilder()
+        return FileResult.newBuilder()
                 .withStatusCode(200)
                 .withFile(new File(AppDispatchModule.class.getResource("/downloadme.bin").getFile()))
                 .build();
@@ -126,7 +136,7 @@ final public class AppDispatchModule {
     @DispatchPath("/download-mp4")
     static Result dispatchDownloadMP4() {
         logger.info("calling dowload");
-        return FileResult.Builder.newBuilder()
+        return FileResult.newBuilder()
                 .withStatusCode(200)
                 .withFile(new File(AppDispatchModule.class.getResource("/downloadme.mp4").getFile()))
                 .build();

@@ -4,32 +4,26 @@ import java.io.InputStream;
 
 public class StreamResult extends Result {
 
-    public StreamResult(int statusCode, String contentType, InputStream inputStream) {
-        super(statusCode, contentType, inputStream);
+    public StreamResult(int statusCode, String contentType, InputStream inputStream, Cookie[] cookies) {
+        super(statusCode, contentType, inputStream, cookies);
     }
 
-    public static class Builder {
+    public static StreamResultBuilder newBuilder() {
+        return new StreamResultBuilder();
+    }
 
-        private int statusCode = 200;
+
+    public static class StreamResultBuilder extends Result.Builder<StreamResultBuilder> {
+
         private InputStream inputStream;
 
-        public Builder withStatusCode(int code) {
-            this.statusCode = code;
-            return this;
-        }
-
-        public Builder withInputStream(InputStream inputStream) {
+        public StreamResultBuilder withInputStream(InputStream inputStream) {
             this.inputStream = inputStream;
             return this;
         }
 
         public StreamResult build() {
-            String contentType = "application/octet-stream";
-            return new StreamResult(statusCode, contentType, inputStream);
-        }
-
-        public static Builder newBuilder() {
-            return new Builder();
+            return new StreamResult(statusCode, "application/octet-stream", inputStream, cookies);
         }
 
     }
