@@ -1,6 +1,5 @@
 package com.hzh.dagger.http;
 
-import com.hzh.dagger.annotation.QueryParameter;
 import io.muserver.MuRequest;
 import io.muserver.MuResponse;
 

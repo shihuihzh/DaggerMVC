@@ -21,7 +21,7 @@ public class HTMLResult extends Result {
         }
 
         public HTMLResult build() {
-            return new HTMLResult(statusCode, "text/html", data, cookies);
+            return new HTMLResult(statusCode, "text/html; charset=utf-8", data, cookies);
         }
 
     }

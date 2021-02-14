@@ -44,7 +44,7 @@ public class Cookie {
         return rawCookie;
     }
 
-    public static CookieBuilder builder() {
+    public static CookieBuilder newBuilder() {
         return new CookieBuilder();
     }
 

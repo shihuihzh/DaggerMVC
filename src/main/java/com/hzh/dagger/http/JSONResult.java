@@ -28,7 +28,7 @@ public class JSONResult extends Result {
         }
 
         public JSONResult build() {
-            return new JSONResult(this.statusCode, "application/json", data, cookies);
+            return new JSONResult(this.statusCode, "application/json; charset=utf-8", data, cookies);
         }
 
     }

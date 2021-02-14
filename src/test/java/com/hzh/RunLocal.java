@@ -6,6 +6,7 @@ import com.hzh.dagger.http.RequestRouter;
 import com.hzh.dagger.http.DaggerMVCHandler;
 import io.muserver.MuServer;
 import io.muserver.MuServerBuilder;
+import io.muserver.handlers.ResourceHandlerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ public class RunLocal {
 
         MuServer server = MuServerBuilder.httpServer()
                 .withHttpsPort(8080)
+                .addHandler(ResourceHandlerBuilder.fileOrClasspath("src/test/resources/web", "/web"))
                 .addHandler(new DaggerMVCHandler(requestRouter))
                 .start();
         logger.info("Started server at " + server.uri());

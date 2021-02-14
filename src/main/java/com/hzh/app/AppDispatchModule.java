@@ -1,18 +1,17 @@
 package com.hzh.app;
 
 import com.hzh.dagger.annotation.DispatchPath;
-import com.hzh.dagger.annotation.QueryParameter;
 import com.hzh.dagger.http.*;
 import com.hzh.dagger.module.CollectDispatcherModule;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
-import io.muserver.RequestParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ final public class AppDispatchModule {
     @Provides
     @IntoMap
     @DispatchPath(value = "/hello", method = HttpMethod.GET)
-    static Result dispatchHello(Request request, HttpMethod method, @QueryParameter RequestParameters parameters) {
+    static Result dispatchHello(Request request, HttpMethod method, QueryRequestParameters parameters) {
         logger.info("calling hello {}", request.getRawRequest().uri());
         logger.info("Method: {}", method);
         logger.info("Request parameter: {}", parameters);
@@ -90,7 +89,7 @@ final public class AppDispatchModule {
         cookieList.forEach(c -> sb.append(c.getName()).append(": ").append(c.getValue()).append("<br>"));
 
         // set a random cookie
-        Cookie cookie = Cookie.builder()
+        Cookie cookie = Cookie.newBuilder()
                 .withName("randomNumber")
                 .withValue(String.valueOf(ThreadLocalRandom.current().nextInt(10000)))
                 .withMaxAge(ThreadLocalRandom.current().nextInt(10000))
@@ -124,7 +123,7 @@ final public class AppDispatchModule {
     @IntoMap
     @DispatchPath("/download")
     static Result dispatchDownload() {
-        logger.info("calling dowload");
+        logger.info("calling download");
         return FileResult.newBuilder()
                 .withStatusCode(200)
                 .withFile(new File(AppDispatchModule.class.getResource("/downloadme.bin").getFile()))
@@ -135,10 +134,40 @@ final public class AppDispatchModule {
     @IntoMap
     @DispatchPath("/download-mp4")
     static Result dispatchDownloadMP4() {
-        logger.info("calling dowload");
+        logger.info("calling download");
         return FileResult.newBuilder()
                 .withStatusCode(200)
                 .withFile(new File(AppDispatchModule.class.getResource("/downloadme.mp4").getFile()))
                 .build();
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath(value = "/upload-with-form", method = HttpMethod.POST)
+    static Result UploadWithForm(Request request, FormRequestParameters parameters) {
+        logger.info("calling upload with form");
+
+        try {
+            final UploadedFile file = request.uploadedFile("file");
+            return HTMLResult.newBuilder()
+                    .withData(String.format("""
+                            <h1>Upload Result</h1>
+                            form data: %s <br>
+                            file name: %s <br>
+                            file size: %d <br>
+                            upload file data: <br>
+                            <textarea readonly>%s </textarea>
+                            """, 
+                            parameters,
+                            file.filename(),
+                            file.size(),
+                            Base64.getEncoder().encodeToString(file.asBytes())))
+                    .build();
+        } catch (IOException e) {
+            logger.error("upload failure. ", e);
+            return HTMLResult.newBuilder()
+                    .withData("upload failure")
+                    .build();
+        }
     }
 }

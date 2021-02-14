@@ -21,7 +21,7 @@ public class TextResult extends Result {
         }
 
         public TextResult build() {
-            return new TextResult(statusCode, "text/plain", data, cookies);
+            return new TextResult(statusCode, "text/plain; charset=utf-8", data, cookies);
         }
 
     }

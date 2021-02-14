@@ -1,15 +1,12 @@
 package com.hzh.dagger.module;
 
 
-import com.hzh.dagger.annotation.FormData;
 import com.hzh.dagger.annotation.PathValue;
-import com.hzh.dagger.annotation.QueryParameter;
 import com.hzh.dagger.http.*;
 import dagger.Module;
 import dagger.Provides;
-import io.muserver.RequestParameters;
+import io.muserver.MuRequest;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +17,11 @@ public interface MVCModule {
     @Provides
     static Request provideRequest(MVCHolder mvcHolder) {
         return mvcHolder.getLocalRequestContext().getRequest();
+    }
+
+    @Provides
+    static MuRequest provideRawRequest(MVCHolder mvcHolder) {
+        return mvcHolder.getLocalRequestContext().getRequest().getRawRequest();
     }
 
     @Provides
@@ -38,21 +40,15 @@ public interface MVCModule {
     }
 
     @Provides
-    @QueryParameter
-    static RequestParameters provideQueryParameters(MVCHolder mvcHolder) {
-        return mvcHolder.getLocalRequestContext().getRequest().getRawRequest().query();
+    static QueryRequestParameters provideQueryParameters(MVCHolder mvcHolder) {
+        return mvcHolder.getLocalRequestContext().getRequest().query();
     }
 
     @Provides
-    @FormData
-    static RequestParameters provideFormData(MVCHolder mvcHolder) {
-        try {
-            return mvcHolder.getLocalRequestContext().getRequest().getRawRequest().form();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    static FormRequestParameters provideFormData(MVCHolder mvcHolder) {
+        return mvcHolder.getLocalRequestContext().getRequest().form();
     }
+
 
     @Provides
     @PathValue
