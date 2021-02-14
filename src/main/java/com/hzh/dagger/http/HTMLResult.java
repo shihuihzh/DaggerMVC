@@ -13,15 +13,15 @@ public class HTMLResult extends Result {
 
     public static class HTMLResultBuilder extends Result.Builder<HTMLResultBuilder> {
 
-        private String data;
+        private String html;
 
-        public HTMLResultBuilder withData(String data) {
-            this.data = data;
+        public HTMLResultBuilder withHTML(String html) {
+            this.html = html;
             return this;
         }
 
         public HTMLResult build() {
-            return new HTMLResult(statusCode, "text/html; charset=utf-8", data, cookies);
+            return new HTMLResult(statusCode, "text/html; charset=utf-8", html, cookies);
         }
 
     }

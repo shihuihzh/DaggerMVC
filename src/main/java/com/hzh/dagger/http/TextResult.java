@@ -13,15 +13,15 @@ public class TextResult extends Result {
 
     public static class TextResultBuilder extends Result.Builder<TextResultBuilder> {
 
-        private String data;
+        private String text;
 
-        public TextResultBuilder withData(String data) {
-            this.data = data;
+        public TextResultBuilder withText(String text) {
+            this.text = text;
             return this;
         }
 
         public TextResult build() {
-            return new TextResult(statusCode, "text/plain; charset=utf-8", data, cookies);
+            return new TextResult(statusCode, "text/plain; charset=utf-8", text, cookies);
         }
 
     }

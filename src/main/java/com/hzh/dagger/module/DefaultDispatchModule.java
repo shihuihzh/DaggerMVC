@@ -19,7 +19,7 @@ public abstract class DefaultDispatchModule {
     static Result defaultResult404(Request request) {
         return HTMLResult.newBuilder()
                 .withStatusCode(404)
-                .withData("<h1>page not found</h1>" + request.uri().getPath())
+                .withHTML("<h1>page not found</h1>" + request.uri().getPath())
                 .build();
 
     }
@@ -27,7 +27,7 @@ public abstract class DefaultDispatchModule {
     static Result defaultResult405(Request request) {
         return HTMLResult.newBuilder()
                 .withStatusCode(405)
-                .withData("<h1>Method Not Allowed</h1>")
+                .withHTML("<h1>Method Not Allowed</h1>")
                 .build();
     }
 
@@ -44,7 +44,7 @@ public abstract class DefaultDispatchModule {
 
         return HTMLResult.newBuilder()
                 .withStatusCode(500)
-                .withData("<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>")
+                .withHTML("<h1>Internal Server Error</h1><pre>" + exceptionMessage + "</pre>")
                 .build();
     }
 

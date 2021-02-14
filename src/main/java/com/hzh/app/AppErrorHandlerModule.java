@@ -16,7 +16,7 @@ public class AppErrorHandlerModule {
     @ErrorHandler(404)
     static Result handle404(Request request) {
         return HTMLResult.newBuilder()
-                .withData("I am a custom 404:" + request.uri())
+                .withHTML("I am a custom 404:" + request.uri())
                 .build();
     }
 
@@ -25,7 +25,7 @@ public class AppErrorHandlerModule {
     @ErrorHandler(405)
     static Result handle405(Request request) {
         return HTMLResult.newBuilder()
-                .withData("Method not allow. I am a custom 405:" + request.uri())
+                .withHTML("Method not allow. I am a custom 405:" + request.uri())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class AppErrorHandlerModule {
     @ErrorHandler(500)
     static Result handle500(Exception exception) {
         return HTMLResult.newBuilder()
-                .withData("I am a custom 500:" + exception.getMessage())
+                .withHTML("I am a custom 500:" + exception.getMessage())
                 .build();
     }
 }

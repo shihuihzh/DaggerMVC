@@ -34,6 +34,12 @@ public class DaggerMVCHandler implements MuHandler  {
                     .forEach(muResponse::addCookie);
         }
 
+        if (res instanceof RedirectResult) {
+            muResponse.redirect(((RedirectResult) res).getUrl());
+            muResponse.write(res.getData().toString());
+            return true;
+        }
+
         Object data = res.getData();
         if (data != null) {
             if (res instanceof FileResult) {
@@ -47,7 +53,7 @@ public class DaggerMVCHandler implements MuHandler  {
                 try (InputStream in = (InputStream) data) {
                     Mutils.copy(in, muResponse.outputStream(), 1024);
                 }
-            } else {
+            } else  {
                 muResponse.write(res.getData().toString());
             }
         }

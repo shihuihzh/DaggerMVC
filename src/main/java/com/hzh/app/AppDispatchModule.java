@@ -30,7 +30,7 @@ final public class AppDispatchModule {
         logger.info("Request parameter: {}", parameters);
         return HTMLResult.newBuilder()
                 .withStatusCode(200)
-                .withData("<h1>Hello</h1>")
+                .withHTML("<h1>Hello</h1>")
                 .build();
     }
 
@@ -42,7 +42,7 @@ final public class AppDispatchModule {
         try {
             return HTMLResult.newBuilder()
                     .withStatusCode(200)
-                    .withData(request.getRawRequest().readBodyAsString())
+                    .withHTML(request.getRawRequest().readBodyAsString())
                     .build();
         } catch (IOException e) {
             return DaggerMVCException.createAndThrow(e);
@@ -64,7 +64,7 @@ final public class AppDispatchModule {
         logger.info("calling helloName");
         return HTMLResult.newBuilder()
                 .withStatusCode(200)
-                .withData(pathValue.toString())
+                .withHTML(pathValue.toString())
                 .build();
     }
 
@@ -75,7 +75,7 @@ final public class AppDispatchModule {
         logger.info("calling empty");
         return HTMLResult.newBuilder()
                 .withStatusCode(200)
-                .withData("Hello")
+                .withHTML("Hello")
                 .build();
     }
 
@@ -97,7 +97,7 @@ final public class AppDispatchModule {
 
         return HTMLResult.newBuilder()
                 .withStatusCode(200)
-                .withData(sb.toString())
+                .withHTML(sb.toString())
                 .withCookie(cookie)
                 .build();
     }
@@ -115,6 +115,21 @@ final public class AppDispatchModule {
         return JSONResult.newBuilder()
                 .withStatusCode(200)
                 .withObject(obj)
+                .build();
+
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/attributes")
+    static Result dispatchAttributes(Request request) {
+        logger.info("calling attr");
+        request.setAttribute("name", "Howe");
+        request.setAttribute("age", 30);
+
+        return JSONResult.newBuilder()
+                .withStatusCode(200)
+                .withObject(request.getAllAttributes())
                 .build();
 
     }
@@ -150,7 +165,7 @@ final public class AppDispatchModule {
         try {
             final UploadedFile file = request.uploadedFile("file");
             return HTMLResult.newBuilder()
-                    .withData(String.format("""
+                    .withHTML(String.format("""
                             <h1>Upload Result</h1>
                             form data: %s <br>
                             file name: %s <br>
@@ -166,8 +181,19 @@ final public class AppDispatchModule {
         } catch (IOException e) {
             logger.error("upload failure. ", e);
             return HTMLResult.newBuilder()
-                    .withData("upload failure")
+                    .withHTML("upload failure")
                     .build();
         }
+    }
+
+    @Provides
+    @IntoMap
+    @DispatchPath("/redirect")
+    static Result dispatchRedirect() {
+        logger.info("calling redirect");
+        return RedirectResult.newBuilder()
+                .withUrl("/hello")
+                .withText("go /hello")
+                .build();
     }
 }
