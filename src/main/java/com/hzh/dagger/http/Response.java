@@ -9,4 +9,7 @@ public class Response {
         this.response = response;
     }
 
+    public MuResponse getRawResponse() {
+        return this.response;
+    }
 }

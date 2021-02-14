@@ -24,3 +24,5 @@ hs_err_pid*
 
 .idea
 target
+DaggerMVC.iml
+dependency-reduced-pom.xml

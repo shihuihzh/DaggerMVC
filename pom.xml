@@ -86,11 +86,11 @@
                 <version>3.6.1</version>
                 <configuration>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>com.google.auto.service</groupId>
-                            <artifactId>auto-service</artifactId>
-                            <version>1.0-rc7</version>
-                        </path>
+<!--                        <path>-->
+<!--                            <groupId>com.google.auto.service</groupId>-->
+<!--                            <artifactId>auto-service</artifactId>-->
+<!--                            <version>1.0-rc7</version>-->
+<!--                        </path>-->
                         <path>
                             <groupId>com.google.auto.value</groupId>
                             <artifactId>auto-value</artifactId>

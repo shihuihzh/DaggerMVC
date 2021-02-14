@@ -5,13 +5,16 @@ import io.muserver.MuResponse;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 public class MVCHolder {
 
     private final ThreadLocal<RequestContext> requestCtxHolder = new ThreadLocal<>();
 
-    public void initRequestContext(MuRequest request, MuResponse response) {
-        requestCtxHolder.set(new RequestContext(request, response));
+    public RequestContext initRequestContext(MuRequest request, MuResponse response) {
+        final RequestContext context = new RequestContext(request, response);
+        requestCtxHolder.set(context);
+        return context;
     }
 
     public RequestContext getLocalRequestContext() {
@@ -24,10 +27,12 @@ public class MVCHolder {
 
 
     public static class RequestContext {
+        private final String requestId;
         private final Request request;
         private final Response response;
 
         public RequestContext(MuRequest rawRequest, MuResponse rawResponse) {
+            this.requestId = UUID.randomUUID().toString();
             this.request = new Request(rawRequest);
             this.response = new Response(rawResponse);
         }
@@ -50,6 +55,10 @@ public class MVCHolder {
 
         public List<Cookie> getCookies() {
             return request.getCookies();
+        }
+
+        public String getRequestId() {
+            return requestId;
         }
     }
 }
