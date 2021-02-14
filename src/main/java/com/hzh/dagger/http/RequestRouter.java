@@ -22,7 +22,7 @@ public class RequestRouter {
     }
 
     public Result dispatch(MuRequest muRequest, MuResponse muResponse) throws Exception {
-        final MVCHolder.RequestContext requestContext = holder.initRequestContext(muRequest, muResponse);
+        final RequestContext requestContext = holder.initRequestContext(muRequest, muResponse);
 
         logger.debug("Start to request, id=" + requestContext.getRequestId());
         final Result response = mvcComponentProvider.get()

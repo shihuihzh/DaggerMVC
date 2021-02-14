@@ -1,6 +1,7 @@
 package com.hzh.dagger.module;
 
 import com.hzh.dagger.http.*;
+import dagger.BindsOptionalOf;
 import dagger.Module;
 import dagger.Provides;
 import org.slf4j.Logger;
@@ -9,15 +10,13 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Provider;
 import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 
 @Module
-final public class DefaultDispatchModule {
+public abstract class DefaultDispatchModule {
     private static final Logger logger = LoggerFactory.getLogger(DefaultDispatchModule.class);
 
-//    public static final String DAGGER_MVC_NOT_FOUND = "NOT_FOUND";
-//    private static final String DAGGER_MVC_METHOD_NOT_ALLOWED = "DAGGER_MVC_METHOD_NOT_ALLOWED";
-
-    static Result return404(Request request) {
+    static Result defaultResult404(Request request) {
         return HTMLResult.newBuilder()
                 .withStatusCode(404)
                 .withData("<h1>page not found</h1>" + request.uri().getPath())
@@ -25,14 +24,14 @@ final public class DefaultDispatchModule {
 
     }
 
-    static Result return405(Request request) {
+    static Result defaultResult405(Request request) {
         return HTMLResult.newBuilder()
                 .withStatusCode(405)
                 .withData("<h1>Method Not Allowed</h1>")
                 .build();
     }
 
-    static Result return500(Request request, Exception e) {
+    static Result defaultResult500(Request request, Exception e) {
         StringBuilder exceptionMessage = new StringBuilder();
         exceptionMessage.append(e.toString()).append("\n");
         for (StackTraceElement stackTraceElement : e.getStackTrace()) {
@@ -49,9 +48,12 @@ final public class DefaultDispatchModule {
                 .build();
     }
 
+    @BindsOptionalOf abstract Map<Integer, Provider<Result>> optionalErrorHandler();
+
     @Provides
     static Result dispatch(Map<Dispatcher, Provider<Result>> dispatchers,
-                           HttpMethod method, Request request, URI normalizeURI) {
+                           Optional<Map<Integer, Provider<Result>>> errorHandler,
+                           HttpMethod method, RequestContext requestContext, Request request, URI normalizeURI) {
 
         String path = normalizeURI.getPath();
         logger.debug("request uri path={}, normalize={}", request.uri().getPath(), path);
@@ -63,15 +65,41 @@ final public class DefaultDispatchModule {
                     if (dispatcher.getMethod() == HttpMethod.ALL || dispatcher.getMethod() == method) {
                         return dispatcherEntry.getValue().get();
                     } else {
-                        return return405(request);
+                        return getErrorResult(405, null, errorHandler, requestContext);
                     }
                 }
             }
-            return return404(request);
+
+            return getErrorResult(404, null, errorHandler, requestContext);
+
         } catch (Exception e) {
             logger.debug(String.format("Request %s got exception.", path), e);
-            return return500(request, e);
+            return getErrorResult(500, e, errorHandler, requestContext);
         }
+    }
+
+    private static Result getErrorResult(int statusCode, Exception exception,
+                                         Optional<Map<Integer, Provider<Result>>> errorHandler,
+                                         RequestContext requestContext) {
+
+        if (exception != null) {
+            requestContext.setRequestException(exception);
+        }
+
+        if (errorHandler.isPresent() && errorHandler.get().containsKey(statusCode)) {
+            return errorHandler.get().get(statusCode).get();
+        } else {
+            switch (statusCode) {
+                case 404:
+                    return defaultResult404(requestContext.getRequest());
+                case 405:
+                    return defaultResult405(requestContext.getRequest());
+                case 500:
+                    return defaultResult500(requestContext.getRequest(), exception);
+            }
+        }
+
+        return null;
     }
 
 }

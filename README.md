@@ -9,7 +9,7 @@ A simple implement of MVC router building by Dagger
 - [x] Support response cookie
 - [x] Support file upload
 - [ ] Support context path
-- [ ] Support custom error page
+- [x] Support custom error page
 - [ ] Support static file route
 - [ ] Support method dispatcher annotation such as `@GetPath` , `@PostPath`
 

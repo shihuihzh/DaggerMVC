@@ -16,7 +16,7 @@ import java.util.Map;
 public interface MVCModule {
 
     @Provides
-    static MVCHolder.RequestContext provideRequestContext(MVCHolder mvcHolder) {
+    static RequestContext provideRequestContext(MVCHolder mvcHolder) {
         return mvcHolder.getLocalRequestContext();
     }
 
@@ -43,6 +43,11 @@ public interface MVCModule {
     @Provides
     static HttpMethod provideMethod(MVCHolder mvcHolder) {
         return mvcHolder.getLocalRequestContext().getMethod();
+    }
+
+    @Provides
+    static Exception provideRequestExceptoin(MVCHolder mvcHolder) {
+        return mvcHolder.getLocalRequestContext().getRequestException();
     }
 
     @Provides

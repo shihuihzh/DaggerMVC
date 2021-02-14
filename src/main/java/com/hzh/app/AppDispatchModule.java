@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Module(includes = CollectDispatcherModule.class)
+@Module(includes = {CollectDispatcherModule.class, AppErrorHandlerModule.class })
 final public class AppDispatchModule {
     private static final Logger logger = LoggerFactory.getLogger(AppDispatchModule.class);
 
