@@ -14,6 +14,6 @@ A simple implement of MVC router building by Dagger
 - [ ] Support static file route
 - [x] Support request attribute
 - [ ] Support method dispatcher annotation such as `@GetPath` , `@PostPath`
-- [ ] Try refactor to maven multiple module
+- [x] Try refactor to maven multiple module
 
 

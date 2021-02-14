@@ -13,7 +13,7 @@ public class StreamResult extends Result {
     }
 
 
-    public static class StreamResultBuilder extends Result.Builder<StreamResultBuilder> {
+    public static class StreamResultBuilder extends Builder<StreamResultBuilder> {
 
         private InputStream inputStream;
 

@@ -27,7 +27,7 @@ public class FileResult extends Result {
         return new FileResultBuilder();
     }
 
-    public static class FileResultBuilder extends Result.Builder<FileResultBuilder> {
+    public static class FileResultBuilder extends Builder<FileResultBuilder> {
 
         private File file;
         private String fileName;

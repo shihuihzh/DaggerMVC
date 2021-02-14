@@ -11,7 +11,7 @@ public class TextResult extends Result {
     }
 
 
-    public static class TextResultBuilder extends Result.Builder<TextResultBuilder> {
+    public static class TextResultBuilder extends Builder<TextResultBuilder> {
 
         private String text;
 

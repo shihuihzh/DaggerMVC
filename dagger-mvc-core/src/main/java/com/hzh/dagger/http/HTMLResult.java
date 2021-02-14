@@ -11,7 +11,7 @@ public class HTMLResult extends Result {
     }
 
 
-    public static class HTMLResultBuilder extends Result.Builder<HTMLResultBuilder> {
+    public static class HTMLResultBuilder extends Builder<HTMLResultBuilder> {
 
         private String html;
 

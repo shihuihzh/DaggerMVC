@@ -14,7 +14,7 @@ public class JSONResult extends Result {
         return new JSONResultBuilder();
     }
 
-    public static class JSONResultBuilder extends Result.Builder<JSONResultBuilder> {
+    public static class JSONResultBuilder extends Builder<JSONResultBuilder> {
 
         private String data;
         public JSONResultBuilder withJsonString(String jsonString) {

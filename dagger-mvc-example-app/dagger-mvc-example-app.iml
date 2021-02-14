@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
+    <output url="file://$MODULE_DIR$/../dagger-mvc-example-app/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../dagger-mvc-example-app/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../dagger-mvc-example-app">
+      <sourceFolder url="file://$MODULE_DIR$/../dagger-mvc-example-app/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../dagger-mvc-example-app/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../dagger-mvc-example-app/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../dagger-mvc-example-app/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../dagger-mvc-example-app/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.example:dagger-mvc-core:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: io.muserver:mu-server:0.56.5" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.56.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.dagger:dagger:2.31.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.dagger:dagger-producers:2.31.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-compat-qual:2.5.3" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:26.0-jre" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:2.5.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.1.3" level="project" />
+    <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" name="Maven: com.google.auto.value:auto-value-annotations:1.7.4" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+  </component>
+</module>

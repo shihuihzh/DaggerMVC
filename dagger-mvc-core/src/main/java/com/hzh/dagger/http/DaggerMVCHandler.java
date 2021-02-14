@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.stream.StreamSupport;
 
 
 public class DaggerMVCHandler implements MuHandler  {
@@ -36,7 +35,6 @@ public class DaggerMVCHandler implements MuHandler  {
 
         if (res instanceof RedirectResult) {
             muResponse.redirect(((RedirectResult) res).getUrl());
-            muResponse.write(res.getData().toString());
             return true;
         }
 
